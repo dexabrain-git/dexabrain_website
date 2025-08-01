@@ -13,10 +13,13 @@ const GMAIL_ADDRESS = 'dexabrain@gmail.com'; // Replace with your actual Gmail a
 const FROM_NAME = 'Dexabrain Team';
 const REPLY_TO_EMAIL = 'info@dexabrain.com'; // The email you want replies to go to
 
+// Notification Configuration
+const NOTIFICATION_EMAIL = 'dexabrain@gmail.com'; // Email to receive registration notifications
+
 // Email Assets - Update these with your Google Drive direct image URLs
  const EMAIL_ASSETS = {
-    logo: 'https://drive.google.com/uc?export=view&id=1huql0nzStanEY-U_CwctuvJcBlF391wq',
-    backgroundImage: 'https://drive.google.com/uc?export=view&id=1jwDbd5meUheQ3WturRyFSHlPTrze02Ce',
+    logo: 'https://drive.google.com/uc?export=view&id=12xPMq9xAvrY76aUusFfAFXu3mb9PySqT',
+    backgroundImage: 'https://drive.google.com/uc?export=view&id=1veapzT2FFhALMCxJGFLL3NSW8oCiBAjs',
     bannerImage: 'https://drive.google.com/uc?export=view&id=1gHLWQI-fNeOO-k5pPqSB_EMz9Til6CqN/view?usp=sharing',
     venueImage: 'https://drive.google.com/uc?export=view&id=1Bl126GM2RhXQiGi-NaySuE2ooygz-QAb',
     medicalBgImage: 'https://drive.google.com/uc?export=view&id=1DrJm6STVQTTxJ3x1bgRiPQ7NA3tyYOqY/view?usp=sharing'
@@ -177,6 +180,16 @@ function handleRegistration(data) {
     console.log(`\n📝 Updating email status in Google Sheets...`);
     updateEmailSentStatusForAllAttendees(sheet, registrationId, emailResults);
     console.log(`📝 Email status update completed`);
+    
+    // Send notification email to admin
+    console.log(`\n🔔 Sending notification email to admin...`);
+    try {
+      sendRegistrationNotification(data, registrationId, totalAttendees);
+      console.log(`✅ Admin notification sent successfully to: ${NOTIFICATION_EMAIL}`);
+    } catch (notificationError) {
+      console.error(`❌ Admin notification failed:`, notificationError);
+      // Don't fail the registration if notification fails
+    }
     
     return createResponse(true, 'Registration successful', {
       registrationId: registrationId,
@@ -453,6 +466,51 @@ function testAssetUrls() {
   }
 }
 
+// Test notification email function
+function testNotificationEmail() {
+  console.log(`\n🔔 [testNotificationEmail] Testing admin notification email`);
+  console.log(`🔔 [testNotificationEmail] Sending to: ${NOTIFICATION_EMAIL}`);
+  
+  try {
+    // Create test registration data
+    const testData = {
+      primaryAttendee: {
+        name: 'John Doe',
+        email: 'john.doe@example.com',
+        phone: '+65 1234 5678'
+      },
+      additionalAttendees: [
+        {
+          name: 'Jane Smith',
+          email: 'jane.smith@example.com',
+          phone: '+65 2345 6789'
+        }
+      ],
+      referralCode: 'FRIEND123',
+      consentGiven: true
+    };
+    
+    const testRegistrationId = 'REG' + Date.now() + '_NOTIFICATION_TEST';
+    const testTotalAttendees = 2;
+    
+    console.log(`🔔 [testNotificationEmail] Test registration ID: ${testRegistrationId}`);
+    console.log(`🔔 [testNotificationEmail] Calling sendRegistrationNotification...`);
+    
+    sendRegistrationNotification(testData, testRegistrationId, testTotalAttendees);
+    
+    console.log(`✅ [testNotificationEmail] Test notification sent successfully!`);
+    console.log(`✅ [testNotificationEmail] Check ${NOTIFICATION_EMAIL} for the notification email`);
+    
+    return 'Notification email test completed successfully';
+    
+  } catch (error) {
+    console.error(`🚨 [testNotificationEmail] Test failed:`, error);
+    console.error(`🚨 [testNotificationEmail] Error message:`, error.message);
+    console.error(`🚨 [testNotificationEmail] Error stack:`, error.stack);
+    return `Notification email test failed: ${error.message}`;
+  }
+}
+
 // Email Functions
 function sendConfirmationEmail(attendee, registrationId, totalAttendees, additionalAttendees, isPrimary = true) {
   console.log(`\n🔧 [sendConfirmationEmail] Starting for: ${attendee.email}`);
@@ -540,12 +598,8 @@ function createEmailTemplate(attendee, registrationId, totalAttendees, additiona
       <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
       <!-- Playfair Display for event title, web-safe fonts for body text -->
     </head>
-    <body style="margin: 0; padding: 0; background: linear-gradient(135deg, rgba(29, 233, 182, 0.5) 0%, rgba(41, 121, 255, 0.5) 100%); font-family: 'Avenir Next', Avenir, 'Helvetica Neue', Helvetica, Arial, sans-serif;">
-      <div style="max-width: 800px; margin: 0 auto; background: linear-gradient(135deg, rgba(29, 233, 182, 0.5) 0%, rgba(41, 121, 255, 0.5) 100%);">
-        
-        <!-- Invitation Background with Overlay (like InviteOverlay) -->
-        <div style="position: relative; background-image: url('${EMAIL_ASSETS.backgroundImage}'); background-size: cover; background-position: center; min-height: 500px; overflow: hidden;">
-          
+    <body style="margin: 0; padding: 0; background-image: url('${EMAIL_ASSETS.backgroundImage}'); background-size: cover; background-position: center; min-height: 500px; overflow: hidden; font-family: 'Avenir Next', Avenir, 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+      <div style="max-width: 800px; margin: 0 auto; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(60px) saturate(200%); webkit-backdrop-filter: blur(60px) saturate(200%);">
           <!-- Dark overlay for text readability -->
           <div style="position: absolute; inset: 0; background: rgba(0, 0, 0, 0.4);"></div>
           
@@ -557,16 +611,15 @@ function createEmailTemplate(attendee, registrationId, totalAttendees, additiona
           </div>
 
           <!-- Content Container -->
-          <div style="position: relative; padding: 30px 80px; text-align: center; color: white;">
+          <div style="position: relative; padding: 15px 40px; text-align: center; color: white;">
             
+            <!-- Top Decorative Line -->
+            <div style="margin-top: 24px;">
+              <div style="width: 128px; height: 1px; background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.4), transparent); margin: 0 auto;"></div>
+            </div>
+          
             <!-- Elegant Border Frame (like InviteOverlay) -->
-            <div style="position: relative; padding: 40px 60px; border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 24px; backdrop-filter: blur(10px); background: rgba(255, 255, 255, 0.05); box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);">
-              
-              <!-- Corner Decorations -->
-              <div style="position: absolute; top: 16px; left: 16px; width: 32px; height: 32px; border-left: 2px solid rgba(255, 255, 255, 0.5); border-top: 2px solid rgba(255, 255, 255, 0.5); border-top-left-radius: 8px;"></div>
-              <div style="position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border-right: 2px solid rgba(255, 255, 255, 0.5); border-top: 2px solid rgba(255, 255, 255, 0.5); border-top-right-radius: 8px;"></div>
-              <div style="position: absolute; bottom: 16px; left: 16px; width: 32px; height: 32px; border-left: 2px solid rgba(255, 255, 255, 0.5); border-bottom: 2px solid rgba(255, 255, 255, 0.5); border-bottom-left-radius: 8px;"></div>
-              <div style="position: absolute; bottom: 16px; right: 16px; width: 32px; height: 32px; border-right: 2px solid rgba(255, 255, 255, 0.5); border-bottom: 2px solid rgba(255, 255, 255, 0.5); border-bottom-right-radius: 8px;"></div>
+            <div style="position: relative; padding: 20px 30px; border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 24px; backdrop-filter: blur(10px); background: rgba(255, 255, 255, 0.05); box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);">
 
               <!-- Registration Confirmed -->
               <div style="margin-bottom: 24px;">
@@ -630,7 +683,7 @@ function createEmailTemplate(attendee, registrationId, totalAttendees, additiona
             </div>
 
             <!-- Bottom Decorative Line -->
-            <div style="margin-top: 32px;">
+            <div style="margin-top: 24px;">
               <div style="width: 128px; height: 1px; background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.4), transparent); margin: 0 auto;"></div>
             </div>
 
@@ -638,14 +691,14 @@ function createEmailTemplate(attendee, registrationId, totalAttendees, additiona
         </div>
 
         <!-- Footer (matching event page footer) -->
-        <div style="background: linear-gradient(to bottom, rgb(15, 23, 42) 0%, rgb(30, 41, 59) 50%, rgb(15, 23, 42) 100%); padding: 48px 32px; position: relative; overflow: hidden;">
+        <div style="background: linear-gradient(to bottom, rgb(15, 23, 42) 0%, rgb(30, 41, 59) 50%, rgb(15, 23, 42) 100%); padding: 12px 8px; position: relative; overflow: hidden;">
           <!-- Background Pattern -->
           <div style="position: absolute; inset: 0; opacity: 0.1; background-image: radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.3) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(253, 186, 116, 0.3) 0%, transparent 50%);"></div>
           
           <!-- Logo Section -->
-          <div style="position: relative; text-align: center; margin-bottom: 32px;">
-            <div style="display: inline-block; margin-bottom: 16px;">
-              <img src="${EMAIL_ASSETS.logo}" alt="Dexabrain" style="height: 150px; width: auto;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <div style="position: relative; text-align: center; margin-bottom: 0px;">
+            <div style="display: inline-block; margin-bottom: 0x;">
+              <img src="${EMAIL_ASSETS.logo}" alt="Dexabrain" style="height: 100px; width: auto;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
               <div style="display: none; font-family: 'Avenir Next', Avenir, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 28px; font-weight: 800; background: linear-gradient(135deg, #1DE9B6 0%, #2979FF 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; color: #1DE9B6;">
                 DEXABRAIN
               </div>
@@ -656,7 +709,7 @@ function createEmailTemplate(attendee, registrationId, totalAttendees, additiona
           </div>
 
           <!-- Contact Information -->
-          <div style="text-align: center; margin-bottom: 32px;">
+          <div style="text-align: center; margin-bottom: 24px;">
             <div style="color: rgba(255, 255, 255, 0.6); font-family: 'Avenir Next', Avenir, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 500; margin-bottom: 12px;">
               Questions about your registration?
             </div>
@@ -666,7 +719,7 @@ function createEmailTemplate(attendee, registrationId, totalAttendees, additiona
           </div>
 
           <!-- Footer Bottom -->
-          <div style="text-align: center; padding-top: 24px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+          <div style="text-align: center; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
             <p style="color: rgba(255, 255, 255, 0.6); font-family: 'Avenir Next', Avenir, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; margin: 0;">
               © 2025 Dexabrain. All rights reserved.
             </p>
@@ -733,6 +786,103 @@ Phone: +65 1234 5678
 © 2025 Dexabrain. All rights reserved.
 This email was sent because you registered for our premium event.
   `.trim();
+}
+
+// Send registration notification to admin
+function sendRegistrationNotification(data, registrationId, totalAttendees) {
+  console.log(`\n🔔 [sendRegistrationNotification] Starting for: ${registrationId}`);
+  
+  const primaryAttendee = data.primaryAttendee;
+  const additionalAttendees = data.additionalAttendees || [];
+  
+  // Create attendee list
+  let attendeeList = `• ${primaryAttendee.name} (${primaryAttendee.email}) - ${primaryAttendee.phone}`;
+  if (additionalAttendees.length > 0) {
+    additionalAttendees.forEach(attendee => {
+      attendeeList += `\n• ${attendee.name} (${attendee.email}) - ${attendee.phone}`;
+    });
+  }
+  
+  // Create referral info
+  const referralInfo = data.referralCode ? `\nReferral Code: ${data.referralCode}` : '';
+  
+  const subject = `🎯 New Registration: ${primaryAttendee.name} - ${registrationId}`;
+  
+  const htmlBody = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f8f9fa;">
+      <div style="background: white; padding: 30px; border-radius: 10px; border-left: 5px solid #1DE9B6;">
+        <h2 style="color: #2A72C4; margin-top: 0;">🎯 New Event Registration</h2>
+        
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <h3 style="color: #333; margin-top: 0;">Registration Details</h3>
+          <p><strong>Registration ID:</strong> ${registrationId}</p>
+          <p><strong>Registration Time:</strong> ${new Date().toLocaleString('en-SG', { timeZone: 'Asia/Singapore' })}</p>
+          <p><strong>Total Attendees:</strong> ${totalAttendees}</p>
+          <p><strong>Consent Given:</strong> ${data.consentGiven ? '✅ Yes' : '❌ No'}</p>
+          ${referralInfo}
+        </div>
+        
+        <div style="background: #e8f5e8; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <h3 style="color: #333; margin-top: 0;">👥 Attendee Information</h3>
+          <div style="font-family: monospace; font-size: 14px; line-height: 1.8;">
+            ${attendeeList.replace(/\n/g, '<br>')}
+          </div>
+        </div>
+        
+        <div style="background: #fff3cd; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <h3 style="color: #333; margin-top: 0;">📅 Event Information</h3>
+          <p><strong>Event:</strong> ${EVENT_DETAILS.name}</p>
+          <p><strong>Date:</strong> ${EVENT_DETAILS.date}</p>
+          <p><strong>Time:</strong> ${EVENT_DETAILS.time}</p>
+          <p><strong>Location:</strong> ${EVENT_DETAILS.location}</p>
+        </div>
+        
+        <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+          <p style="color: #666; font-size: 12px;">
+            This notification was automatically generated by the Dexabrain Registration System
+          </p>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  const plainBody = `
+NEW EVENT REGISTRATION NOTIFICATION
+===================================
+
+Registration ID: ${registrationId}
+Registration Time: ${new Date().toLocaleString('en-SG', { timeZone: 'Asia/Singapore' })}
+Total Attendees: ${totalAttendees}
+Consent Given: ${data.consentGiven ? 'Yes' : 'No'}${referralInfo}
+
+ATTENDEE INFORMATION:
+${attendeeList}
+
+EVENT INFORMATION:
+Event: ${EVENT_DETAILS.name}
+Date: ${EVENT_DETAILS.date}
+Time: ${EVENT_DETAILS.time}
+Location: ${EVENT_DETAILS.location}
+
+---
+This notification was automatically generated by the Dexabrain Registration System
+  `.trim();
+  
+  console.log(`🔔 [sendRegistrationNotification] Sending to: ${NOTIFICATION_EMAIL}`);
+  console.log(`🔔 [sendRegistrationNotification] Subject: ${subject}`);
+  
+  GmailApp.sendEmail(
+    NOTIFICATION_EMAIL,
+    subject,
+    plainBody,
+    {
+      htmlBody: htmlBody,
+      name: 'Dexabrain Registration System',
+      replyTo: REPLY_TO_EMAIL
+    }
+  );
+  
+  console.log(`✅ [sendRegistrationNotification] Notification sent successfully`);
 }
 
 // Helper function to update email sent status for all attendees
