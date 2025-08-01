@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { useForm } from 'react-hook-form';
+// Form handling is done in RegistrationModal component
 import ConfirmationModal from './ConfirmationModal';
 import RegistrationModal from './RegistrationModal';
 import CalendarButton from './CalendarButton';
@@ -95,14 +95,7 @@ export default function MainEventPage() {
   const [registrantName, setRegistrantName] = useState('');
   const [newsletterEmail, setNewsletterEmail] = useState('');
 
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<RegistrationData>();
-
-  const onSubmit = async (data: RegistrationData) => {
-    // Handle registration logic here
-    setRegistrantName(data.name);
-    setShowConfirmation(true);
-    reset();
-  };
+  // Form handling is done in RegistrationModal component
 
   const handleRegistrationSubmit = (data: RegistrationData) => {
     // Handle registration logic here

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useForm, useFieldArray } from 'react-hook-form';
 
@@ -372,7 +372,7 @@ export default function RegistrationModal({ isOpen, onClose, onSubmit }: Registr
                           I may withdraw consent anytime, subject to legal requirements.
                         </p>
                         <p className="text-black text-xs">
-                          In accordance with Singapore's Personal Data Protection Act 2012. 
+                          In accordance with Singapore&apos;s Personal Data Protection Act 2012. 
                           <span className="text-amberGlow hover:text-amberGlow/80 cursor-pointer underline ml-1">
                             View Privacy Policy
                           </span>
