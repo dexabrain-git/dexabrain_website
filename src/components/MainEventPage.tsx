@@ -4,12 +4,20 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import ConfirmationModal from './ConfirmationModal';
+import RegistrationModal from './RegistrationModal';
 
-interface RegistrationData {
+interface AttendeeData {
   name: string;
   email: string;
   phone: string;
+}
+
+interface RegistrationData {
+  numberOfPax: number;
+  primaryAttendee: AttendeeData;
+  additionalAttendees: AttendeeData[];
   referralCode?: string;
+  consentGiven: boolean;
 }
 
 // Countdown Timer Component
@@ -81,6 +89,7 @@ function CountdownTimer() {
 
 export default function MainEventPage() {
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [showRegistration, setShowRegistration] = useState(false);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [registrantName, setRegistrantName] = useState('');
 
@@ -91,6 +100,12 @@ export default function MainEventPage() {
     setRegistrantName(data.name);
     setShowConfirmation(true);
     reset();
+  };
+
+  const handleRegistrationSubmit = (data: RegistrationData) => {
+    // Handle registration logic here
+    setRegistrantName(data.primaryAttendee.name);
+    setShowConfirmation(true);
   };
 
   return (
@@ -120,7 +135,7 @@ export default function MainEventPage() {
             </div>
           </div>
           {/* Base dark overlay for readability */}
-          <div className="absolute inset-0 bg-black/20"></div>
+          <div className="absolute inset-0 bg-black/30"></div>
           {/* Bottom Half Gradient Overlay - Primary to Amber left-to-right */}
           <div className="absolute inset-0" style={{
             background: `
@@ -213,6 +228,7 @@ export default function MainEventPage() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              onClick={() => setShowRegistration(true)}
               className="bg-white/10 backdrop-blur-sm border border-white/30 text-white px-8 py-3 rounded-full font-nunito font-medium hover:bg-white/30 transition-all duration-300"
             >
               RESERVE A SPOT
@@ -766,6 +782,7 @@ export default function MainEventPage() {
             <motion.button
               whileHover={{ scale: 1.05, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.3)" }}
               whileTap={{ scale: 0.95 }}
+              onClick={() => setShowRegistration(true)}
               className="bg-white/10 backdrop-blur-sm border border-white/30 text-white px-8 py-3 rounded-full font-nunito font-medium hover:bg-white/30 transition-all duration-300"
             >
               JOIN NOW!
@@ -834,7 +851,7 @@ export default function MainEventPage() {
                 <h3 className="text-xl lg:text-2xl font-playfair font-bold text-white mb-3">
                   Stay Connected
                 </h3>
-                <p className="text-white/80 font-nunito text-sm mb-6 leading-relaxed">
+                <p className="text-white/80 font-nunito text-md mb-6 leading-relaxed">
                   Sign up for our newsletter and stay up-to-date on the latest event trends, 
                   industry news, and exclusive Dexa Brain promotions.
                 </p>
@@ -977,6 +994,13 @@ export default function MainEventPage() {
             </div>
           </div>
           
+
+      {/* Registration Modal */}
+      <RegistrationModal
+        isOpen={showRegistration}
+        onClose={() => setShowRegistration(false)}
+        onSubmit={handleRegistrationSubmit}
+      />
 
       {/* Confirmation Modal */}
       <ConfirmationModal
