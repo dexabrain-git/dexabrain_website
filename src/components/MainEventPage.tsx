@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import ConfirmationModal from './ConfirmationModal';
 import RegistrationModal from './RegistrationModal';
+import CalendarButton from './CalendarButton';
 
 interface AttendeeData {
   name: string;
@@ -92,6 +93,7 @@ export default function MainEventPage() {
   const [showRegistration, setShowRegistration] = useState(false);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [registrantName, setRegistrantName] = useState('');
+  const [newsletterEmail, setNewsletterEmail] = useState('');
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm<RegistrationData>();
 
@@ -106,6 +108,37 @@ export default function MainEventPage() {
     // Handle registration logic here
     setRegistrantName(data.primaryAttendee.name);
     setShowConfirmation(true);
+  };
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!newsletterEmail) {
+      alert('Please enter your email address');
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: newsletterEmail })
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        alert('Successfully subscribed to newsletter!');
+        setNewsletterEmail('');
+      } else {
+        alert('Newsletter subscription failed: ' + result.message);
+      }
+    } catch (error) {
+      console.error('Newsletter subscription error:', error);
+      alert('Newsletter subscription failed. Please try again.');
+    }
   };
 
   return (
@@ -222,7 +255,7 @@ export default function MainEventPage() {
             className="text-white"
           >
             <p className="text-md font-nunito text-white/70 uppercase tracking-wider mb-4">
-              7 SEPTEMBER 2025 • FREE SEMINAR
+              7 SEPTEMBER 2025 • FREE ADMISSION
             </p>
             
             <motion.button
@@ -771,13 +804,13 @@ export default function MainEventPage() {
             </div>
           </motion.div>
 
-          {/* Reserve Spot Button */}
+          {/* Action Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
             viewport={{ once: true }}
-            className="flex justify-center"
+            className="flex flex-col sm:flex-row justify-center items-center gap-4"
           >
             <motion.button
               whileHover={{ scale: 1.05, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.3)" }}
@@ -787,6 +820,11 @@ export default function MainEventPage() {
             >
               JOIN NOW!
             </motion.button>
+            
+            <CalendarButton 
+              className="bg-white/10 backdrop-blur-sm border border-white/30 text-white px-8 py-3 rounded-full font-nunito font-medium hover:bg-white/30 transition-all duration-300 focus:outline-none focus:ring-0"
+              variant="secondary"
+            />
           </motion.div>
         </div>
       </section>
@@ -818,7 +856,7 @@ export default function MainEventPage() {
                 <img
                   src="/assets/dexabrain-logo.png"
                   alt="Dexabrain"
-                  className="h-40 mx-auto lg:mx-0"
+                  className="h-30 mx-auto lg:mx-0"
                   onError={(e) => {
                     const target = e.currentTarget;
                     target.style.display = 'none';
@@ -857,20 +895,24 @@ export default function MainEventPage() {
                 </p>
                 
                 {/* Email Subscription Form */}
-                <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto lg:mx-0">
+                <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto lg:mx-0">
                   <input
                     type="email"
+                    value={newsletterEmail}
+                    onChange={(e) => setNewsletterEmail(e.target.value)}
                     placeholder="Write Your Email"
                     className="flex-1 px-4 py-2.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white placeholder-white/50 focus:border-white/40 focus:outline-none focus:ring-2 focus:ring-white/20 transition-all font-nunito text-sm"
+                    required
                   />
                   <motion.button
+                    type="submit"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className="px-6 py-2.5 bg-white text-slate-900 font-nunito font-semibold rounded-full hover:bg-white/90 transition-all duration-300 shadow-lg text-sm"
                   >
                     SUBSCRIBE
                   </motion.button>
-              </div>
+                </form>
             </div>
             
               {/* Social Media Links */}
