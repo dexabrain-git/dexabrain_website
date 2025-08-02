@@ -174,11 +174,11 @@ export default function MainEventPage() {
         </div>
 
         {/* Logo - Responsive Position */}
-        <div className="absolute top-2 left-4 sm:left-8 sm:-top-4 z-30">
+        <div className="absolute top-4 left-6 sm:left-20 sm:top-2 z-30">
           <img 
             src="/assets/dexabrain-logo.png" 
             alt="Dexabrain Logo" 
-            className="h-24 sm:h-32 lg:h-40 w-auto"
+            className="h-24 sm:h-28 lg:h-24 w-auto"
             onError={(e) => {
               // Fallback to text if logo doesn't exist
               e.currentTarget.style.display = 'none';
@@ -239,8 +239,8 @@ export default function MainEventPage() {
           </div>
         </div>
 
-        {/* Date and Reserve Button - Mobile Responsive */}
-        <div className="absolute bottom-20 sm:bottom-32 lg:bottom-40 left-1/2 transform -translate-x-1/2 lg:left-40 lg:transform-none z-20 text-center lg:text-left">
+        {/* Date and Reserve Button - Restored Desktop Position */}
+        <div className="absolute bottom-20 sm:bottom-32 lg:bottom-40 left-1/2 transform -translate-x-1/2 lg:left-60 lg:transform-none z-20 text-center lg:text-left">
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -955,7 +955,7 @@ export default function MainEventPage() {
                 <img
                   src="/assets/dexabrain-logo.png"
                   alt="Dexabrain"
-                  className="h-30 mx-auto lg:mx-0"
+                  className="h-20 sm:h-24 lg:h-24 mx-auto lg:mx-0"
                   onError={(e) => {
                     const target = e.currentTarget;
                     target.style.display = 'none';

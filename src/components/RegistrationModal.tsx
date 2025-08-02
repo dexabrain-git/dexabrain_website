@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useForm, useFieldArray } from 'react-hook-form';
 
@@ -25,6 +25,7 @@ interface RegistrationModalProps {
 }
 
 export default function RegistrationModal({ isOpen, onClose, onSubmit }: RegistrationModalProps) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   const { register, handleSubmit, formState: { errors }, reset, control } = useForm<RegistrationData>({
     defaultValues: {
@@ -50,6 +51,7 @@ export default function RegistrationModal({ isOpen, onClose, onSubmit }: Registr
   };
 
   const handleFormSubmit = async (data: RegistrationData) => {
+    setIsSubmitting(true);
     try {
       // Update numberOfPax based on actual attendees
       data.numberOfPax = 1 + data.additionalAttendees.length;
@@ -78,6 +80,8 @@ export default function RegistrationModal({ isOpen, onClose, onSubmit }: Registr
     } catch (error) {
       console.error('Registration error:', error);
       alert('Registration failed. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -96,9 +100,10 @@ export default function RegistrationModal({ isOpen, onClose, onSubmit }: Registr
   }, [isOpen, reset]);
 
   return (
-    <AnimatePresence>primary
+    <AnimatePresence>
       {isOpen && (
         <motion.div
+          key="registration-modal"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -140,7 +145,10 @@ export default function RegistrationModal({ isOpen, onClose, onSubmit }: Registr
             <button
               type="button"
               onClick={handleCloseClick}
-              className="absolute top-6 right-6 z-20 w-8 h-8 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors duration-200 text-black border border-black backdrop-blur-sm"
+              disabled={isSubmitting}
+              className={`absolute top-6 right-6 z-20 w-8 h-8 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors duration-200 text-black border border-black backdrop-blur-sm ${
+                isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -151,8 +159,10 @@ export default function RegistrationModal({ isOpen, onClose, onSubmit }: Registr
             <div className="relative z-10 min-h-full lg:h-full flex flex-col lg:grid lg:grid-cols-[3fr_2fr]">
               
               {/* Left Section - Registration Form - Above right section on mobile */}
-              <div className="min-h-screen lg:min-h-0 lg:h-full lg:overflow-y-auto">
-                <div className="p-3 sm:p-4 lg:p-5 xl:p-6 min-h-screen lg:min-h-full flex flex-col">
+              <div className="min-h-screen lg:min-h-0 lg:h-full lg:overflow-y-auto relative">
+                {/* White overlay for mobile to prevent dark background bleeding through */}
+                <div className="absolute inset-0 bg-white/60 lg:bg-transparent"></div>
+                <div className="relative z-10 p-3 sm:p-4 lg:p-5 xl:p-6 min-h-screen lg:min-h-full flex flex-col">
                   {/* Header */}
                   <div className="mb-4 sm:mb-5">
                     <motion.h2
@@ -388,14 +398,26 @@ export default function RegistrationModal({ isOpen, onClose, onSubmit }: Registr
                   <div className="pt-4 sm:pt-5 lg:pt-6 flex justify-center">
                     <motion.button
                       type="submit"
+                      disabled={isSubmitting}
                       whileHover={{ 
-                        scale: 1.05,
-                        boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.3)"
+                        scale: isSubmitting ? 1 : 1.05,
+                        boxShadow: isSubmitting ? "none" : "0 20px 25px -5px rgba(0, 0, 0, 0.3)"
                       }}
-                      whileTap={{ scale: 0.95 }}
-                      className="bg-white/20 backdrop-blur-sm border border-black text-black px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-nunito font-medium hover:bg-white/30 transition-all duration-300 text-sm sm:text-base"
+                      whileTap={{ scale: isSubmitting ? 1 : 0.95 }}
+                      className={`bg-white/20 backdrop-blur-sm border border-black text-black px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-nunito font-medium transition-all duration-300 text-sm sm:text-base ${
+                        isSubmitting 
+                          ? 'opacity-50 cursor-not-allowed' 
+                          : 'hover:bg-white/30'
+                      }`}
                     >
-                      SIGN UP
+                      {isSubmitting ? (
+                        <div className="flex items-center justify-center gap-2">
+                          <div className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin"></div>
+                          PROCESSING...
+                        </div>
+                      ) : (
+                        'SIGN UP'
+                      )}
                     </motion.button>
                   </div>
                 </motion.form>
@@ -551,6 +573,56 @@ export default function RegistrationModal({ isOpen, onClose, onSubmit }: Registr
                   </motion.div>
                 </div>
               </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+
+      {/* Loading Modal Overlay */}
+      {isSubmitting && (
+        <motion.div
+          key="loading-modal"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center"
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="bg-white/90 backdrop-blur-md rounded-2xl p-8 sm:p-10 max-w-sm mx-4 text-center shadow-2xl border border-white/20"
+          >
+            {/* Loading Animation */}
+            <div className="mb-6">
+              {/* Loading Icon */}
+              <div className="flex justify-center">
+                <div className="relative">
+                  <svg className="w-16 h-16 text-primary animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  {/* Subtle glow effect */}
+                  <div className="absolute inset-0 w-16 h-16 rounded-full bg-primary/10 animate-pulse"></div>
+                </div>
+              </div>
+            </div>
+
+            {/* Loading Text */}
+            <div className="space-y-2">
+              <h3 className="text-xl font-playfair font-bold text-slate-800">
+                Processing Registration
+              </h3>
+              <p className="text-slate-600 font-nunito text-sm">
+                Please wait while we register your details...
+              </p>
+            </div>
+
+            {/* Animated dots */}
+            <div className="flex justify-center space-x-1 mt-4">
+              <div className="w-2 h-2 bg-primary rounded-full animate-bounce"></div>
+              <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+              <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
             </div>
           </motion.div>
         </motion.div>
