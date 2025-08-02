@@ -77,13 +77,13 @@ export default function CalendarButton({ className = '', variant = 'primary' }: 
               onClick={() => setIsOpen(false)}
             />
             
-            {/* Compact Side Dropdown */}
+            {/* Compact Side Dropdown - Mobile Responsive Position */}
             <motion.div 
               initial={{ opacity: 0, y: -5 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -5 }}
               transition={{ duration: 0.15, ease: "easeOut" }}
-              className="absolute top-full mt-2 left-full ml-3 bg-white/95 backdrop-blur-xl border border-white/20 rounded-xl shadow-2xl z-20 min-w-[200px] overflow-hidden"
+              className="absolute top-full mt-2 right-0 sm:left-full sm:ml-3 sm:right-auto bg-white/95 backdrop-blur-xl border border-white/20 rounded-xl shadow-2xl z-20 min-w-[200px] overflow-hidden"
             >
               <div className="py-1">
                 {/* Apple/Outlook/Android Option */}
