@@ -159,9 +159,9 @@ export default function RegistrationModal({ isOpen, onClose, onSubmit }: Registr
             <div className="relative z-10 min-h-full lg:h-full flex flex-col lg:grid lg:grid-cols-[3fr_2fr]">
               
               {/* Left Section - Registration Form - Above right section on mobile */}
-              <div className="min-h-screen lg:min-h-0 lg:h-full lg:overflow-y-auto relative bg-white/60 lg:bg-transparent">
+              <div className="min-h-screen lg:min-h-0 lg:h-full lg:overflow-y-auto relative bg-white/30 lg:bg-transparent">
                 {/* Additional white overlay for mobile to ensure full coverage */}
-                <div className="absolute inset-0 w-full min-h-full bg-white/60 lg:bg-transparent"></div>
+                <div className="absolute inset-0 w-full min-h-full bg-white/30 lg:bg-transparent"></div>
                 <div className="relative z-10 p-3 sm:p-4 lg:p-5 xl:p-6 min-h-screen lg:min-h-full flex flex-col bg-white/60 lg:bg-transparent">
                   {/* Header */}
                   <div className="mb-4 sm:mb-5">
