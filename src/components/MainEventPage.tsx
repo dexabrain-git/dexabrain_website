@@ -60,7 +60,7 @@ function CountdownTimer() {
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, delay: 0.2 }}
       viewport={{ once: true }}
-      className="grid grid-cols-4 gap-4 lg:gap-8 max-w-3xl mx-auto mb-12"
+      className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 lg:gap-8 max-w-3xl mx-auto mb-8 sm:mb-12 px-4 sm:px-0"
     >
       {[
         { value: timeLeft.days.toString().padStart(2, '0'), label: 'DAYS' },
@@ -74,12 +74,12 @@ function CountdownTimer() {
           whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: index * 0.1 }}
           viewport={{ once: true }}
-          className="text-center bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 shadow-xl"
+          className="text-center bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 lg:p-6 border border-white/20 shadow-xl"
         >
-          <div className="text-5xl lg:text-7xl font-bold text-white mb-2 drop-shadow-lg font-nunito">
+          <div className="text-2xl sm:text-4xl lg:text-5xl xl:text-7xl font-bold text-white mb-1 sm:mb-2 drop-shadow-lg font-nunito">
             {item.value}
           </div>
-          <div className="text-sm lg:text-base font-nunito text-white/80 uppercase tracking-wider font-medium">
+          <div className="text-xs sm:text-sm lg:text-base font-nunito text-white/80 uppercase tracking-wider font-medium">
             {item.label}
           </div>
         </motion.div>
@@ -173,12 +173,12 @@ export default function MainEventPage() {
           }}></div>
         </div>
 
-        {/* Logo - Absolute Position */}
-        <div className="absolute -top-4 left-8 z-30">
+        {/* Logo - Responsive Position */}
+        <div className="absolute top-2 left-4 sm:left-8 sm:-top-4 z-30">
           <img 
             src="/assets/dexabrain-logo.png" 
             alt="Dexabrain Logo" 
-            className="h-40 w-auto"
+            className="h-24 sm:h-32 lg:h-40 w-auto"
             onError={(e) => {
               // Fallback to text if logo doesn't exist
               e.currentTarget.style.display = 'none';
@@ -186,22 +186,22 @@ export default function MainEventPage() {
               if (fallback) fallback.style.display = 'block';
             }}
           />
-          <span className="text-2xl font-playfair font-bold text-white" style={{ display: 'none' }}>
+          <span className="text-xl sm:text-2xl font-playfair font-bold text-white" style={{ display: 'none' }}>
             DEXABRAIN
           </span>
         </div>
 
-        {/* Navigation - Restored Original Position */}
-        <nav className="absolute top-0 left-0 right-0 z-20 px-4 sm:px-6 lg:px-8 py-6">
+        {/* Navigation - Mobile Responsive */}
+        <nav className="absolute top-0 left-0 right-0 z-20 px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
           <div className="flex items-center justify-end">
-            <div className="flex items-center space-x-8 mr-4">
-              <div className="hidden md:flex space-x-8 text-white/80 font-nunito">
+            <div className="flex items-center space-x-4 sm:space-x-8 mr-2 sm:mr-4">
+              <div className="hidden md:flex space-x-6 lg:space-x-8 text-white/80 font-nunito text-sm lg:text-base">
                 <a href="#about" className="hover:text-white transition-colors">ABOUT</a>
                 <a href="#about" className="hover:text-white transition-colors">SPEAKERS</a>
                 <a href="#learn" className="hover:text-white transition-colors">LEARN</a>
                 <a href="#register" className="hover:text-white transition-colors">REGISTER</a>
               </div>
-              <button className="bg-white/10 backdrop-blur-sm text-white px-6 py-2 rounded-full font-nunito font-bold hover:bg-white/30 transition-colors">
+              <button className="bg-white/10 backdrop-blur-sm text-white px-4 sm:px-6 py-2 rounded-full font-nunito font-bold hover:bg-white/30 transition-colors text-sm sm:text-base">
                 CONTACT
               </button>
             </div>
@@ -221,33 +221,33 @@ export default function MainEventPage() {
               {/* This space can be used for additional content if needed */}
             </motion.div>
 
-            {/* Right Side - Main Content - Moved slightly right */}
+            {/* Right Side - Main Content - Responsive Spacing */}
             <motion.div 
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-white ml-20"
+              className="text-white ml-0 sm:ml-8 lg:ml-20 text-center lg:text-left"
             >
-              <h2 className="text-3xl lg:text-4xl xl:text-5xl font-playfair font-bold mb-6 leading-tight drop-shadow-lg">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-playfair font-bold mb-4 sm:mb-6 leading-tight drop-shadow-lg">
                 Neuro Reset Awareness Seminar
             </h2>
               
-              <p className="text-lg lg:text-xl font-nunito text-white/80 mb-8 leading-relaxed">
+              <p className="text-base sm:text-lg lg:text-xl font-nunito text-white/80 mb-6 sm:mb-8 leading-relaxed px-4 sm:px-0">
               This seminar aims to bring awareness around a holistic approach to chronic pain management through non-invasive novel techniques.
               </p>
             </motion.div>
           </div>
         </div>
 
-        {/* Date and Reserve Button - Bottom Left with margin */}
-        <div className="absolute bottom-40 left-40 z-20">
+        {/* Date and Reserve Button - Mobile Responsive */}
+        <div className="absolute bottom-20 sm:bottom-32 lg:bottom-40 left-1/2 transform -translate-x-1/2 lg:left-40 lg:transform-none z-20 text-center lg:text-left">
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-white"
           >
-            <p className="text-md font-nunito text-white/70 uppercase tracking-wider mb-4">
+            <p className="text-sm sm:text-md font-nunito text-white/70 uppercase tracking-wider mb-3 sm:mb-4">
               7 SEPTEMBER 2025 • FREE ADMISSION
             </p>
             
@@ -255,7 +255,7 @@ export default function MainEventPage() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setShowRegistration(true)}
-              className="bg-white/10 backdrop-blur-sm border border-white/30 text-white px-8 py-3 rounded-full font-nunito font-medium hover:bg-white/30 transition-all duration-300"
+              className="bg-white/10 backdrop-blur-sm border border-white/30 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-nunito font-medium hover:bg-white/30 transition-all duration-300 text-sm sm:text-base"
             >
               RESERVE A SPOT
             </motion.button>
@@ -369,24 +369,24 @@ export default function MainEventPage() {
 
         {/* Content - Centered layout */}
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <div className="grid lg:grid-cols-[2fr_3fr] gap-12 lg:gap-20 items-center min-h-screen">
+          <div className="grid grid-cols-1 lg:grid-cols-[2fr_3fr] gap-8 lg:gap-12 xl:gap-20 items-center min-h-screen px-4 lg:px-0">
             {/* Left: Content */}
             <motion.div 
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
-              className="text-white"
+              className="text-white text-center lg:text-left"
             >
-              <h2 className="text-3xl lg:text-4xl xl:text-5xl font-playfair font-bold mb-6 leading-tight drop-shadow-lg">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-playfair font-bold mb-4 sm:mb-6 mt-8 sm:mt-0 leading-tight drop-shadow-lg">
                 What <span className="text-primary">We Do</span>
               </h2>
               
-              <p className="text-lg font-nunito text-white/80 mb-8 leading-relaxed">
+              <p className="text-base sm:text-lg font-nunito text-white/80 mb-6 sm:mb-8 leading-relaxed">
                 At Dexa Brain, we are committed to advancing health through the latest developments in neuroscience. We believe that by engaging and empowering communities, we can help individuals manage pain more effectively.
               </p>
               
-              <p className="text-lg font-nunito text-white/70 mb-10 leading-relaxed">
+              <p className="text-base sm:text-lg font-nunito text-white/70 mb-8 sm:mb-10 leading-relaxed">
                 Join us for this free seminar and discover how chronic pain can be managed holistically with Prof Andy Hsu and Dr Diana Chan.
               </p>
             </motion.div>
@@ -405,11 +405,11 @@ export default function MainEventPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
                 viewport={{ once: true }}
-                className="relative bg-white/5 backdrop-blur-xl rounded-3xl overflow-hidden hover:bg-white/8 transition-all duration-500 hover:transform hover:scale-[1.02] shadow-2xl"
+                className="relative bg-white/5 backdrop-blur-xl rounded-2xl sm:rounded-3xl overflow-hidden hover:bg-white/8 transition-all duration-500 hover:transform hover:scale-[1.02] shadow-2xl"
               >
-                <div className="flex h-64">
-                  {/* Speaker Image - Takes up exactly 2/5 of card width */}
-                  <div className="relative w-2/5 flex-shrink-0">
+                <div className="flex flex-col sm:flex-row h-auto sm:h-64">
+                  {/* Speaker Image - Full width on mobile, 2/5 on desktop */}
+                  <div className="relative w-full h-48 sm:w-2/5 sm:h-auto flex-shrink-0">
                     <img 
                       src="/assets/prof-andy-hsu.jpg" 
                       alt="Prof Andy Hsu" 
@@ -421,19 +421,19 @@ export default function MainEventPage() {
                     />
                   </div>
                   
-                  {/* Speaker Content - Takes up 3/5 of card width */}
-                  <div className="flex-1 p-8 flex flex-col justify-center relative">
+                  {/* Speaker Content - Full width on mobile, 3/5 on desktop */}
+                  <div className="flex-1 p-4 sm:p-6 lg:p-8 flex flex-col justify-center relative text-center sm:text-left">
                     {/* Content background for better readability */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent rounded-r-3xl"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent sm:rounded-r-3xl"></div>
                     
                     <div className="relative z-10">
-                      <p className="text-white font-nunito text-base leading-relaxed mb-6 font-medium">
+                      <p className="text-white font-nunito text-sm sm:text-base leading-relaxed mb-4 sm:mb-6 font-medium">
                       An internationally recognised Australian clinical neuroscientist and educator.
                       </p>
                       
                       <div className="text-white">
-                        <p className="font-playfair font-bold text-xl mb-2">Prof Andy Hsu</p>
-                        <p className="text-amberGlow font-nunito text-sm font-semibold tracking-wide">Neuroscientist, Australia</p>
+                        <p className="font-playfair font-bold text-lg sm:text-xl mb-1 sm:mb-2">Prof Andy Hsu</p>
+                        <p className="text-amberGlow font-nunito text-xs sm:text-sm font-semibold tracking-wide">Neuroscientist, Australia</p>
                       </div>
                     </div>
                   </div>
@@ -446,11 +446,11 @@ export default function MainEventPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
                 viewport={{ once: true }}
-                className="relative bg-white/5 backdrop-blur-xl rounded-3xl overflow-hidden hover:bg-white/8 transition-all duration-500 hover:transform hover:scale-[1.02] shadow-2xl"
+                className="relative bg-white/5 backdrop-blur-xl rounded-2xl sm:rounded-3xl overflow-hidden hover:bg-white/8 transition-all duration-500 hover:transform hover:scale-[1.02] shadow-2xl"
               >
-                <div className="flex h-64">
-                  {/* Speaker Image - Takes up exactly 2/5 of card width */}
-                  <div className="relative w-2/5 flex-shrink-0">
+                <div className="flex flex-col sm:flex-row h-auto sm:h-64">
+                  {/* Speaker Image - Full width on mobile, 2/5 on desktop */}
+                  <div className="relative w-full h-48 sm:w-2/5 sm:h-auto flex-shrink-0">
                     <div 
                       className="w-full h-full bg-gray-700 flex items-center justify-center"
                       style={{
@@ -469,19 +469,19 @@ export default function MainEventPage() {
                     </div>
                   </div>
                   
-                  {/* Speaker Content - Takes up 3/5 of card width */}
-                  <div className="flex-1 p-8 flex flex-col justify-center relative">
+                  {/* Speaker Content - Full width on mobile, 3/5 on desktop */}
+                  <div className="flex-1 p-4 sm:p-6 lg:p-8 flex flex-col justify-center relative text-center sm:text-left">
                     {/* Content background for better readability */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent rounded-r-3xl"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent sm:rounded-r-3xl"></div>
                     
                     <div className="relative z-10">
-                      <p className="text-white font-nunito text-base leading-relaxed mb-6 font-medium">
+                      <p className="text-white font-nunito text-sm sm:text-base leading-relaxed mb-4 sm:mb-6 font-medium">
                       A specialist in pain management, anaesthesiology and Past Head of Department of Pain Medicine in Singapore General Hospital
                       </p>
                       
                       <div className="text-white">
-                        <p className="font-playfair font-bold text-xl mb-2">Dr Diana Chan</p>
-                        <p className="text-amberGlow font-nunito text-sm font-semibold tracking-wide">Pain Management Specialist, Singapore</p>
+                        <p className="font-playfair font-bold text-lg sm:text-xl mb-1 sm:mb-2">Dr Diana Chan</p>
+                        <p className="text-amberGlow font-nunito text-xs sm:text-sm font-semibold tracking-wide">Pain Management Specialist, Singapore</p>
                       </div>
                     </div>
                   </div>
@@ -551,16 +551,16 @@ export default function MainEventPage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-white text-3xl lg:text-4xl xl:text-5xl font-playfair font-bold mb-6 leading-tight drop-shadow-lg">
+            <h2 className="text-white text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-playfair font-bold mb-4 sm:mb-6 mt-16 sm:mt-0 leading-tight drop-shadow-lg">
               What You&apos;ll <span className="text-amberGlow">Discover</span>
             </h2>
-            <p className="text-lg font-nunito text-white/80 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg font-nunito text-white/80 max-w-3xl mx-auto leading-relaxed px-4 sm:px-0">
               Transformative insights that will change how you think about pain management
             </p>
           </motion.div>
 
-          {/* Interactive Layout - Titles on Left (Small), Cards Take Most Space */}
-          <div className="grid lg:grid-cols-[1fr_3fr] gap-4 lg:gap-6 items-start">
+          {/* Desktop Layout - Side-by-Side */}
+          <div className="hidden lg:grid lg:grid-cols-[1fr_3fr] gap-4 xl:gap-6 items-start">
             {/* Left Side - Elegant Title List */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
@@ -585,7 +585,7 @@ export default function MainEventPage() {
                     onMouseLeave={() => setHoveredCard(null)}
                   >
                     <motion.h3 
-                      className="text-2xl lg:text-3xl font-playfair font-bold text-white/80 group-hover:text-amberGlow transition-all duration-500 leading-tight"
+                      className="text-3xl font-playfair font-bold text-white/80 group-hover:text-amberGlow transition-all duration-500 leading-tight"
                       whileHover={{ x: 20 }}
                     >
                       {title}
@@ -599,8 +599,8 @@ export default function MainEventPage() {
               ))}
             </motion.div>
 
-            {/* Right Side - Interactive Cards (3/4 of section) - MUCH WIDER */}
-            <div className="grid md:grid-cols-3 gap-3 lg:gap-4">
+            {/* Right Side - Interactive Cards - Desktop Grid */}
+            <div className="grid grid-cols-3 gap-3 xl:gap-4">
               {[
                 {
                   image: "/assets/discover-card-1.jpg",
@@ -631,9 +631,9 @@ export default function MainEventPage() {
                   }}
                   className="group"
                 >
-                {/* Luxury Glass Card - Slightly Rounded Edges */}
+                {/* Luxury Glass Card - Mobile Responsive */}
                 <div 
-                  className="relative bg-white/5 backdrop-blur-2xl overflow-hidden transition-all duration-500 h-[400px] rounded-lg flex flex-col"
+                  className="relative bg-white/5 backdrop-blur-2xl overflow-hidden transition-all duration-500 h-[350px] sm:h-[400px] rounded-lg flex flex-col"
                   onMouseEnter={() => setHoveredCard(index)}
                   onMouseLeave={() => setHoveredCard(null)}
                   style={{
@@ -641,8 +641,8 @@ export default function MainEventPage() {
                     backgroundColor: hoveredCard === index ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.05)'
                   }}
                 >
-                  {/* Card Image - 2/2.4 ratio */}
-                  <div className="relative h-56 overflow-hidden flex-shrink-0">
+                  {/* Card Image - Responsive Height */}
+                  <div className="relative h-48 sm:h-56 overflow-hidden flex-shrink-0">
                     <img 
                       src={item.image}
                       alt={item.title}
@@ -680,12 +680,12 @@ export default function MainEventPage() {
                     ></div>
                   </div>
 
-                  {/* Card Content - Explicit Height and Centering */}
+                  {/* Card Content - Mobile Responsive */}
                   <div 
-                    className="relative flex items-center justify-center px-6"
-                    style={{ height: '144px' }}
+                    className="relative flex items-center justify-center px-4 sm:px-6"
+                    style={{ height: '120px' }}
                   >
-                    <p className="font-nunito text-white/70 leading-relaxed text-base group-hover:text-white/90 transition-colors duration-500 text-center max-w-sm">
+                    <p className="font-nunito text-white/70 leading-relaxed text-sm sm:text-base group-hover:text-white/90 transition-colors duration-500 text-center max-w-sm">
                       {item.description}
                     </p>
                   </div>
@@ -697,6 +697,112 @@ export default function MainEventPage() {
               </motion.div>
             ))}
             </div>
+          </div>
+
+          {/* Mobile Layout - Alternating Title-Card Pairs */}
+          <div className="lg:hidden px-4 space-y-8">
+            {[
+              {
+                title: "Brain-Body Reset",
+                image: "/assets/discover-card-1.jpg",
+                description: "Understand the neural pathways of pain and how to rewire them naturally through cutting-edge neuroscience research"
+              },
+              {
+                title: "Pain Without Pills",
+                image: "/assets/discover-card-2.jpg", 
+                description: "Evidence-based alternatives to pharmaceutical interventions that provide lasting relief without dependency"
+              },
+              {
+                title: "Instant Relief Techniques",
+                image: "/assets/discover-card-3.jpg",
+                description: "Practical methods you can apply immediately for pain management in your daily life"
+              }
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="space-y-4"
+              >
+                {/* Title */}
+                <motion.h3 
+                  className="text-2xl sm:text-3xl font-playfair font-bold text-white/80 text-center"
+                >
+                  {item.title}
+                </motion.h3>
+                
+                {/* Card */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                  viewport={{ once: true }}
+                  className="group"
+                >
+                  <div className="relative bg-white/5 backdrop-blur-2xl overflow-hidden transition-all duration-500 h-[350px] sm:h-[400px] rounded-lg flex flex-col">
+                    {/* Card Image */}
+                    <div className="relative h-48 sm:h-56 overflow-hidden flex-shrink-0">
+                      <img 
+                        src={item.image}
+                        alt={item.title}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        onError={(e) => {
+                          e.currentTarget.outerHTML = `
+                            <div class="w-full h-full bg-gradient-to-br from-primary/30 to-amberGlow/30 flex items-center justify-center">
+                              <div class="text-white/50 text-center">
+                                <div class="text-4xl mb-2">📖</div>
+                                <p class="text-sm font-nunito">${item.title}</p>
+                              </div>
+                            </div>
+                          `;
+                        }}
+                      />
+                      {/* Image Overlay for Readability */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                      {/* Blurred Edge Effect */}
+                      <div 
+                        className="absolute inset-0"
+                        style={{
+                          maskImage: 'linear-gradient(to top, black 60%, transparent 80%)',
+                          WebkitMaskImage: 'linear-gradient(to top, black 60%, transparent 80%)'
+                        }}
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-t from-white/20 via-white/10 to-transparent"></div>
+                      </div>
+                      {/* Additional Fade for Smoother Edge */}
+                      <div 
+                        className="absolute inset-0 bg-gradient-to-t from-white/8 via-transparent to-transparent"
+                        style={{
+                          maskImage: 'linear-gradient(to top, black 60%, transparent 100%)',
+                          WebkitMaskImage: 'linear-gradient(to top, black 60%, transparent 100%)'
+                        }}
+                      ></div>
+                    </div>
+
+                    {/* Card Content */}
+                    <div 
+                      className="relative flex items-center justify-center px-4 sm:px-6"
+                      style={{ height: '120px' }}
+                    >
+                      <p className="font-nunito text-white/70 leading-relaxed text-sm sm:text-base group-hover:text-white/90 transition-colors duration-500 text-center max-w-sm">
+                        {item.description}
+                      </p>
+                    </div>
+
+                    {/* Luxury Hover Effects */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-amberGlow/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                  </div>
+                </motion.div>
+
+                {/* Divider Line - except for last item */}
+                {index < 2 && (
+                  <div className="w-full h-px bg-gradient-to-r from-transparent via-white/20 to-transparent mx-auto mt-8"></div>
+                )}
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
@@ -758,10 +864,10 @@ export default function MainEventPage() {
             viewport={{ once: true }}
             className="mb-8"
           >
-            <h2 className="text-white text-3xl lg:text-4xl xl:text-5xl font-playfair font-bold mb-6 leading-tight drop-shadow-lg">
+            <h2 className="text-white text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-playfair font-bold mb-4 sm:mb-6 leading-tight drop-shadow-lg">
               Hesitate No More...
             </h2>
-            <p className="text-lg font-nunito text-white/80 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg font-nunito text-white/80 max-w-3xl mx-auto leading-relaxed px-4 sm:px-0">
               Reserve your spot for this exclusive seminar.
             </p>
           </motion.div>
@@ -775,25 +881,25 @@ export default function MainEventPage() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
             viewport={{ once: true }}
-            className="flex flex-col sm:flex-row justify-center items-center gap-8 mb-12 text-white/90"
+            className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 lg:gap-8 mb-8 sm:mb-12 text-white/90 px-4 sm:px-0"
           >
             <div className="flex items-center gap-3">
               <svg className="w-6 h-6 text-white/80" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
               </svg>
-              <span className="font-nunito font-medium text-lg">7 September 2025</span>
+              <span className="font-nunito font-medium text-sm sm:text-base lg:text-lg">7 September 2025</span>
             </div>
             <div className="flex items-center gap-3">
               <svg className="w-6 h-6 text-white/80" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M16.2,16.2L11,13V7H12.5V12.2L17,14.9L16.2,16.2Z"/>
               </svg>
-              <span className="font-nunito font-medium text-lg">3:00 PM SGT</span>
+              <span className="font-nunito font-medium text-sm sm:text-base lg:text-lg">3:00 PM SGT</span>
             </div>
             <div className="flex items-center gap-3">
               <svg className="w-6 h-6 text-white/80" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12,2C15.31,2 18,4.66 18,7.95C18,12.41 12,19 12,19S6,12.41 6,7.95C6,4.66 8.69,2 12,2M12,6A2,2 0 0,0 10,8A2,2 0 0,0 12,10A2,2 0 0,0 14,8A2,2 0 0,0 12,6M20,19C20,21.21 16.42,23 12,23C7.58,23 4,21.21 4,19C4,17.71 5.22,16.56 7.11,15.94L7.75,16.74C6.67,17.19 6,17.81 6,18.5C6,19.88 8.69,21 12,21C15.31,21 18,19.88 18,18.5C18,17.81 17.33,17.19 16.25,16.74L16.89,15.94C18.78,16.56 20,17.71 20,19Z"/>
               </svg>
-              <span className="font-nunito font-medium text-lg">West Forum, Trehaus @ Funan, City Hall</span>
+              <span className="font-nunito font-medium text-sm sm:text-base lg:text-lg">West Forum, Trehaus @ Funan, City Hall</span>
             </div>
           </motion.div>
 
@@ -803,19 +909,19 @@ export default function MainEventPage() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
             viewport={{ once: true }}
-            className="flex flex-col sm:flex-row justify-center items-center gap-4"
+            className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 px-4 sm:px-0"
           >
             <motion.button
               whileHover={{ scale: 1.05, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.3)" }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setShowRegistration(true)}
-              className="bg-white/10 backdrop-blur-sm border border-white/30 text-white px-8 py-3 rounded-full font-nunito font-medium hover:bg-white/30 transition-all duration-300"
+              className="bg-white/10 backdrop-blur-sm border border-white/30 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-nunito font-medium hover:bg-white/30 transition-all duration-300 text-sm sm:text-base"
             >
               JOIN NOW!
             </motion.button>
             
             <CalendarButton 
-              className="bg-white/10 backdrop-blur-sm border border-white/30 text-white px-8 py-3 rounded-full font-nunito font-medium hover:bg-white/30 transition-all duration-300 focus:outline-none focus:ring-0"
+              className="bg-white/10 backdrop-blur-sm border border-white/30 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-nunito font-medium hover:bg-white/30 transition-all duration-300 focus:outline-none focus:ring-0 text-sm sm:text-base"
               variant="secondary"
             />
           </motion.div>
@@ -833,8 +939,8 @@ export default function MainEventPage() {
             </div>
 
         <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Main Footer Content - Left/Right Grid Layout */}
-          <div className="grid lg:grid-cols-[1fr_2fr] gap-12 lg:gap-20 items-start mb-12">
+          {/* Main Footer Content - Mobile Stack, Desktop Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-8 lg:gap-12 xl:gap-20 items-start mb-8 sm:mb-12 px-4 lg:px-0">
             
             {/* Left Grid (1/3) - Logo & Tagline */}
             <motion.div
@@ -863,7 +969,7 @@ export default function MainEventPage() {
               </div>
               
               {/* Tagline */}
-              <p className="text-white/80 font-nunito text-base leading-relaxed">
+              <p className="text-white/80 font-nunito text-sm sm:text-base leading-relaxed">
                 Transforming neuroscience education and pain management through innovative healthcare solutions.
               </p>
             </motion.div>
@@ -879,29 +985,29 @@ export default function MainEventPage() {
               
               {/* Newsletter Signup */}
               <div className="text-center lg:text-left">
-                <h3 className="text-xl lg:text-2xl font-playfair font-bold text-white mb-3">
+                <h3 className="text-lg sm:text-xl lg:text-2xl font-playfair font-bold text-white mb-3">
                   Stay Connected
                 </h3>
-                <p className="text-white/80 font-nunito text-md mb-6 leading-relaxed">
+                <p className="text-white/80 font-nunito text-sm sm:text-base lg:text-md mb-4 sm:mb-6 leading-relaxed">
                   Sign up for our newsletter and stay up-to-date on the latest event trends, 
                   industry news, and exclusive Dexa Brain promotions.
                 </p>
                 
                 {/* Email Subscription Form */}
-                <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto lg:mx-0">
+                <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-2 sm:gap-3 max-w-md mx-auto lg:mx-0">
                   <input
                     type="email"
                     value={newsletterEmail}
                     onChange={(e) => setNewsletterEmail(e.target.value)}
                     placeholder="Write Your Email"
-                    className="flex-1 px-4 py-2.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white placeholder-white/50 focus:border-white/40 focus:outline-none focus:ring-2 focus:ring-white/20 transition-all font-nunito text-sm"
+                    className="flex-1 px-3 sm:px-4 py-2 sm:py-2.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white placeholder-white/50 focus:border-white/40 focus:outline-none focus:ring-2 focus:ring-white/20 transition-all font-nunito text-xs sm:text-sm"
                     required
                   />
                   <motion.button
                     type="submit"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="px-6 py-2.5 bg-white text-slate-900 font-nunito font-semibold rounded-full hover:bg-white/90 transition-all duration-300 shadow-lg text-sm"
+                    className="px-4 sm:px-6 py-2 sm:py-2.5 bg-white text-slate-900 font-nunito font-semibold rounded-full hover:bg-white/90 transition-all duration-300 shadow-lg text-xs sm:text-sm"
                   >
                     SUBSCRIBE
                   </motion.button>

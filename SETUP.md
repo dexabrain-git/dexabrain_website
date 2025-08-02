@@ -47,7 +47,7 @@ This guide will help you set up the Google Apps Script integration for event reg
 
 1. In your Google Apps Script, find these lines and update them:
    ```javascript
-   const GMAIL_ADDRESS = 'your-gmail@gmail.com'; // Replace with your actual Gmail address
+   const GMAIL_ADDRESS = 'dexabrain@gmail.com'; // Replace with your actual Gmail address
    const FROM_NAME = 'Dexabrain Team';
    const REPLY_TO_EMAIL = 'info@dexabrain.com'; // The email you want replies to go to
    ```
