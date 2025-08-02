@@ -94,8 +94,9 @@ export default function ConfirmationModal({ isOpen, onClose, registrantName }: C
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => {
+                const eventPageUrl = `https://dexabrain-website-rosy.vercel.app/event/neuro-reset-awareness-seminar`;
                 const message = encodeURIComponent(
-                  `Hi! I've registered for the Neuro Reset Awareness Seminar on Sept 7, 2025. Would you like to join me?`
+                  `Hi! I've registered for the Neuro Reset Awareness Seminar on Sept 7, 2025. Would you like to join me?\n\nCheck out the event details and register here:\n${eventPageUrl}`
                 );
                 window.open(`https://wa.me/?text=${message}`, '_blank');
               }}
